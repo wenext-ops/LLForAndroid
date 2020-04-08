@@ -4,6 +4,7 @@ import com.tenext.auth.IoTAuth
 import com.tenext.auth.callback.LoginCallback
 import com.tenext.auth.callback.MyCallback
 import com.tenext.auth.consts.RequestCode
+import com.tenext.auth.entity.User
 import com.tenext.auth.impl.LoginImpl
 import com.tenext.auth.response.BaseResponse
 import com.tenext.auth.response.LoginResponse
@@ -26,10 +27,7 @@ internal class LoginService : BaseService(), LoginImpl {
             override fun success(response: BaseResponse, reqCode: Int) {
                 if (response.isSuccess()) {
                     response.parse(LoginResponse::class.java)?.Data?.let {
-                        IoTAuth.user.ExpireAt = it.ExpireAt
-                        IoTAuth.user.Token = it.Token
-                        //登录成功
-                        callback.success(it)
+                        loginSuccess(callback, it)
                         return
                     }
                 }
@@ -52,7 +50,7 @@ internal class LoginService : BaseService(), LoginImpl {
                 if (response.isSuccess()) {
                     response.parse(LoginResponse::class.java)?.Data?.let {
                         //登录成功
-                        callback.success(it)
+                        loginSuccess(callback, it)
                         return
                     }
                 }
@@ -74,12 +72,22 @@ internal class LoginService : BaseService(), LoginImpl {
                 if (response.isSuccess()) {
                     response.parse(LoginResponse::class.java)?.Data?.let {
                         //登录成功
-                        callback.success(it)
+                        loginSuccess(callback, it)
                         return
                     }
                 }
                 callback.fail(response.msg)
             }
         }, RequestCode.wechat_login)
+    }
+
+    /**
+     * 登录成功
+     */
+    private fun loginSuccess(callback: LoginCallback, user: User) {
+        IoTAuth.user.ExpireAt = user.ExpireAt
+        IoTAuth.user.Token = user.Token
+        //登录成功
+        callback.success(user)
     }
 }
