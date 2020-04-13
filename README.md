@@ -13,7 +13,7 @@
 
 ## 文档
 
-更多开发文档请参考：[腾讯连连Android SDK]
+更多开发文档请参考：[腾讯连连Android SDK](https://github.com/wenext-ops/LLForAndroid/blob/master/tenextll/腾讯连连SDK使用文档.docx)
 
 ## 最新版本
 
